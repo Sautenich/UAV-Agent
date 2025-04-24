@@ -1,0 +1,7 @@
+image_name,object_request,object,coordinates
+2.jpg,"['highway', 'buildings', 'fields', 'trees', 'parking lot', 'construction site']",highway,"[(175, 243), (271, 323), (239, 338), (98, 137), (248, 214), (253, 282)]"
+2.jpg,"['highway', 'buildings', 'fields', 'trees', 'parking lot', 'construction site']",buildings,"[(407, 238), (224, 313), (385, 366), (263, 136), (141, 324), (279, 364)]"
+2.jpg,"['highway', 'buildings', 'fields', 'trees', 'parking lot', 'construction site']",fields,"[(257, 170), (186, 265), (368, 367), (186, 378), (185, 269), (356, 339)]"
+2.jpg,"['highway', 'buildings', 'fields', 'trees', 'parking lot', 'construction site']",trees,"[(263, 275), (202, 321), (375, 372), (470, 319), (381, 166), (305, 208), (320, 286)]"
+2.jpg,"['highway', 'buildings', 'fields', 'trees', 'parking lot', 'construction site']",parking lot,"[(345, 281), (230, 296), (307, 369), (449, 292), (295, 263), (310, 336), (354, 374)]"
+2.jpg,"['highway', 'buildings', 'fields', 'trees', 'parking lot', 'construction site']",construction site,"[(365, 292), (56, 155), (110, 265), (241, 346), (348, 446), (404, 460)]"
