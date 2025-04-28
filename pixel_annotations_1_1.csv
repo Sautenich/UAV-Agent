@@ -1,5 +1,0 @@
-image_name,object_request,object,coordinates
-1.jpg,"['fields', 'roads', 'buildings', 'pond']",fields,"[(463, 195), (463, 195), (388, 260)]"
-1.jpg,"['fields', 'roads', 'buildings', 'pond']",roads,"[(335, 272), (305, 304), (339, 374), (368, 407)]"
-1.jpg,"['fields', 'roads', 'buildings', 'pond']",buildings,"[(389, 321), (374, 323), (352, 368), (439, 445), (452, 456)]"
-1.jpg,"['fields', 'roads', 'buildings', 'pond']",pond,"[(213, 312), (213, 312), (320, 378), (332, 391), (359, 421)]"
