@@ -18,12 +18,12 @@ def describe_satellite_images(images: list) -> str:
         return "Error: No API key provided in request"
 
     max_tokens = 4000
-    temperature = 0.8
+    temperature = 0.6
 
     content = [{
         "type": "text",
         "text": '''
-List all recognizable objects in this image. Provide the answer in the list. 
+List all recognizable objects in this image. Provide the answer STRICTLY in the list. 
 EXAMPLE: ['object1', 'object2', 'object3']'''
     }]
 
@@ -39,7 +39,7 @@ EXAMPLE: ['object1', 'object2', 'object3']'''
         })
 
     payload = {
-        "model": "accounts/fireworks/models/qwen2-vl-72b-instruct",
+        "model": "accounts/fireworks/models/qwen2p5-vl-32b-instruct",
         "max_tokens": max_tokens,
         "temperature": temperature,
         "top_p": 1,
@@ -70,7 +70,7 @@ EXAMPLE: ['object1', 'object2', 'object3']'''
         return f"Error {response.status_code}: {response.text}"
 
 # Load and sort images from local folder
-image_folder = "images/blank"
+image_folder = "images/dataset_images"
 images = []
 
 image_filenames = sorted(
@@ -91,6 +91,8 @@ image_analysis_results = []
 for img, name in images:
     print(f"🔍 Analyzing {name}...")
     description = describe_satellite_images([img])
+    print(description)
+
     image_analysis_results.append({"image_name": name, "description": description})
 
 # Save to CSV
