@@ -7,13 +7,16 @@ import ast
 import csv
 from collections import defaultdict
 
-# Globals for interaction state
+# === Globals for interaction state ===
 click_points = []
 current_annotation = {}
 ax_img = None
 fig = None
 circles = []
 grouped_annotations = defaultdict(list)
+skipped_annotations = []
+
+# === Functions ===
 
 def load_csv(csv_file):
     df = pd.read_csv(csv_file)
@@ -44,8 +47,13 @@ def undo_click(event):
 def next_object(event):
     plt.close()
 
+def skip_object(event):
+    global skipped_annotations
+    skipped_annotations.append(current_annotation)
+    plt.close()
+
 def annotate_images(image_folder, csv_file, start=1, end=None):
-    global ax_img, fig, current_annotation, click_points, circles, grouped_annotations
+    global ax_img, fig, current_annotation, click_points, circles, grouped_annotations, skipped_annotations
 
     data = load_csv(csv_file)
     data = data[start-1:end]  # Apply range
@@ -91,6 +99,10 @@ def annotate_images(image_folder, csv_file, start=1, end=None):
             btn_undo = Button(ax_undo, 'Undo')
             btn_undo.on_clicked(undo_click)
 
+            ax_skip = plt.axes([0.59, 0.01, 0.1, 0.05])
+            btn_skip = Button(ax_skip, 'Skip')
+            btn_skip.on_clicked(skip_object)
+
             fig.canvas.mpl_connect('button_press_event', on_click)
             plt.show()
 
@@ -98,21 +110,34 @@ def annotate_images(image_folder, csv_file, start=1, end=None):
                 key = (image_name, str(object_list), obj)
                 grouped_annotations[key].extend(click_points)
 
-    # Save grouped annotations
+    # === Save annotations ===
     if grouped_annotations:
-        with open(f'''pixel_annotations_{str(start)}_{str(end)}.csv''', mode='w', newline='') as file:
+        output_file = f"pixel_annotations_{str(start)}_{str(end)}.csv"
+        with open(output_file, mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(["image_name", "object_request", "object", "coordinates"])
 
             for (image_name, object_request, obj), coords in grouped_annotations.items():
                 writer.writerow([image_name, object_request, obj, coords])
 
-        print(f"✅ Saved grouped results to 'pixel_annotations_{str(start)}_{str(end)}.csv'")
+        print(f"✅ Saved grouped annotations to '{output_file}'")
     else:
         print("❌ No annotations were made.")
 
-# === Example run ===
-image_folder = 'images/blank'
-csv_file = 'image_analysis_results.csv'
-annotate_images(image_folder, csv_file, start=2, end=2)
+    # === Save skipped objects ===
+    if skipped_annotations:
+        skipped_file = f"skipped_annotations_{str(start)}_{str(end)}.csv"
+        with open(skipped_file, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["image_name", "object_request", "object"])
 
+            for item in skipped_annotations:
+                writer.writerow([item["image_name"], item["object_request"], item["object"]])
+
+        print(f"⚠️ Saved skipped annotations to '{skipped_file}'")
+
+# === Example run ===
+if __name__ == "__main__":
+    image_folder = 'images/dataset_images'  # <-- Set your images folder path
+    csv_file = 'image_analysis_results.csv'  # <-- Set your CSV file path
+    annotate_images(image_folder, csv_file, start=1, end=3)
