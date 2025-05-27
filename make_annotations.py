@@ -19,8 +19,19 @@ skipped_annotations = []
 # === Functions ===
 
 def load_csv(csv_file):
-    df = pd.read_csv(csv_file)
-    return df.to_dict("records")
+    data = []
+    with open(csv_file, 'r', encoding='utf-8') as f:
+        reader = csv.reader(f)
+        next(reader)  # Skip header
+        for row in reader:
+            if len(row) >= 2:
+                image_name = str(int(row[0].split('.')[0])) + '.jpg'
+                description = row[1].strip('"').strip("'")
+                data.append({
+                    "image_name": image_name,
+                    "description": description
+                })
+    return data
 
 def draw_circle(x, y):
     circle = plt.Circle((x, y), radius=2, color='red')
@@ -61,9 +72,11 @@ def annotate_images(image_folder, csv_file, start=1, end=None):
     for entry in data:
         image_name = entry["image_name"]
         try:
-            object_list = ast.literal_eval(entry["description"])
-        except:
-            print(f"Skipping {image_name} due to invalid object list.")
+            # Clean up the description string before parsing
+            desc = entry["description"].strip('[]').replace("'", '"')
+            object_list = ast.literal_eval(f"[{desc}]")
+        except Exception as e:
+            print(f"Skipping {image_name} due to invalid object list: {e}")
             continue
         if not object_list:
             continue

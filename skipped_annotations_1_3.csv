@@ -1,0 +1,3 @@
+image_name,object_request,object
+2.jpg,"['houses', 'roads', 'fields', 'trees', 'buildings', 'pools', 'vegetation', 'open spaces', 'structures']",pools
+3.jpg,"['houses', 'roads', 'fields', 'trees', 'farms', 'vegetation', 'houses', 'vehicles', 'structures']",vehicles
