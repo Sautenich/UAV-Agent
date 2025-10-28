@@ -13,7 +13,7 @@ def natural_sort_key(s):
 
 # Function to describe a list of images using Fireworks API
 def describe_satellite_images(images: list) -> str:
-    api_key = 'fw_3ZijuLwrUV55JHLkm6e3wnb9'
+    api_key = ''
     if not api_key:
         return "Error: No API key provided in request"
 
